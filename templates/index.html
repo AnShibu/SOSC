@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather and Crop Checker</title>
+    <style>
+        body {
+            background-image: url('static/bg.jpg') ;
+            background-size: cover;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .card-header {
+            background-color: #55db34; /* Change this to the desired color */
+            color: #fff;
+            padding: 10px;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
+        }
+
+        .form-container {
+            margin-top: 20px;
+        }
+
+        .form-container label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-container button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-container button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+            <h1>Check the weather & predict</h1>
+        </div>
+    
+    <!-- Form for entering the city -->
+    <form class="form-container" method="post" action="/get_temperature">
+        <label for="city">Enter City:</label>
+        <input type="text" id="city" name="city" required>
+        <button type="submit">Get Temperature</button>
+    </form>
+
+    <!-- Display temperature and form for selecting vegetable -->
+    {% if temperature %}
+        <p>Current Temperature in {{ city }}: {{ temperature }} degrees Celsius</p>
+
+        <form class="form-container" method="post" action="/">
+            <input type="hidden" name="city" value="{{ city }}">
+            <label for="crop">Choose a Crop:</label>
+            <select id="crop" name="crop" required>
+                <option value="eggplant">Eggplant</option>
+                <option value="tomato">Tomato</option>
+                <option value="carrot">Carrot</option>
+                <option value="apple">Apple</option>
+            </select>
+            <button type="submit">Check</button>
+        </form>
+        {% if result %}
+            <p>{{ result }}</p>
+            {% if crop_state %}
+                <p>Crop State: {{ crop_state }}</p>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+</div>
+</body>
+</html>
